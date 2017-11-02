@@ -50,24 +50,21 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm card">
-                        <div class="card-header">This Microphone <span id="nearscope-badge"
-                                                                       class="badge badge-secondary">Silent</span></div>
-                        <div class="card-body">
-                            <canvas id="nearscope" style="height:200px;width:200px;">Scope</canvas>
+                        <div class="card-header">This Microphone</div>
+                        <div>
+                            <canvas id="nearscope" style="height:75px;width:150px;">Scope</canvas>
                         </div>
                     </div>
                     <div class="col-sm card">
-                        <div class="card-header">Unrupt Buffer <span id="earscope-badge" class="badge badge-secondary">Silent</span>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="earscope" style="height:200px;width:200px;">Scope</canvas>
+                        <div class="card-header">Unrupt Buffer</div>
+                        <div>
+                            <canvas id="earscope" style="height:75px;width:150px;">Scope</canvas>
                         </div>
                     </div>
                     <div class="col-sm card">
-                        <div class="card-header">Far Microphone <span id="farscope-badge" class="badge badge-secondary">Silent</span>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="farscope" style="height:200px;width:200px;">Scope</canvas>
+                        <div class="card-header">Far Microphone</div>
+                        <div>
+                            <canvas id="farscope" style="height:75px;width:150px;">Scope</canvas>
                         </div>
                     </div>
                 </div>
@@ -561,7 +558,7 @@
             }
             var mean = tot / bufferLength;
             var newspeak =  (mean > 2.0);
-            if (newspeak != speaking) {
+            if ((badge) && (newspeak != speaking)) {
                 speaking = newspeak;
                 //console.log("newspeak "+newspeak+" mean "+mean);
                 badge.innerText = speaking ? "Speaking" : "Silent";
