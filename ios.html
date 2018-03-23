@@ -254,6 +254,9 @@
         if (data.to != mid){
             alert("message mixup");
         }
+        if ((fid) && (data.from !== fid)){
+            alert("not who we were expecting");
+        }
         switch (data.type) {
             case "cheatUnruptToggle":
                 toggleUnrupt();
@@ -794,7 +797,7 @@
 
     function setRole() {
         cid = $.getUrlVar("unruptId");
-        mid = sessionStorage['unruptId'];
+        mid = localStorage['unruptId'];
         console.log('URL unrupt ID:', cid);
         console.log('sessionStorage unrupt ID:', mid);
         //var act = $("#action");
@@ -813,7 +816,7 @@
                 hexCodes.push(paddedValue);
             }
             mid = hexCodes.join("").toLowerCase();
-            sessionStorage['unruptId'] = mid;
+            localStorage['unruptId'] = mid;
             console.log('Didnt have our own unrupt ID so generated one:', mid);
         }
         if (cid == null){
@@ -834,10 +837,27 @@
                 if (url) {
                     qrcode.makeCode(url);
                 }
-                initiator = (mid === cid);
-                console.log(initiator ? 'We are the initiator' : 'We are not the initiator');
-                var smodal = initiator ? "#share":"#accept";
-                $(smodal).modal('show');
+                if (cid.length > mid.length){
+                    // it might be an established conversation
+                    if (cid.indexOf("-") > 0){
+                        var ids = cid.split("-");
+                        if (ids.length == 2){
+                            if (ids[0] === mid){ fid = ids[1];}
+                            if (ids[1] === mid){ fid = ids[0];}
+
+                        } else {
+                            console.log("wrong number of dashes in  unruptid "+cid);
+                        }
+                    } else {
+                        console.log("wrong no dashes in unruptid "+cid);
+                    }
+                } else {
+                    // it's an invite
+                    initiator = (mid === cid);
+                    console.log(initiator ? 'We are the initiator' : 'We are not the initiator');
+                    var smodal = initiator ? "#share" : "#accept";
+                    $(smodal).modal('show');
+                }
             };
             socket.onerror = (e) => {
                 console.log("can't open websocket", e);
