@@ -158,9 +158,9 @@
             <div class="modal-body" id="shareQR">
 
             </div>
-            <div class="modal-footer">
+            <!--div class="modal-footer">
                 <button id="shareDone" type="button" class="btn btn-secondary" data-dismiss="modal" onclick="shared();">Done</button>
-            </div>
+            </div-->
         </div>
     </div>
 </div>
@@ -242,7 +242,7 @@
     var AudioContext = window.AudioContext || window.webkitAudioContext;
     var framecount =0;
     var mode = "waiting";
-    var offerSendLoop
+    var offerSendLoop;
     var session;
 
     // message stuff - used to create direct connection to peer over WEBRTC
@@ -774,21 +774,44 @@
 
 
     function shared() {
-        setupRTC();
+        /*setupRTC();
         setupAudio().then(_ => {
             console.log("ready for offer");
             doPlay();
 
-        });
+        }); */
+        document.location = location.pathname + "?" + "convoId=" + cid
+            + "&video=1";
     }
     function accepted() {
-        setupRTC();
+        /*setupRTC();
         setupAudio().then(_ => {
             console.log("ready for offer");
             startCall(cid)
             doPlay();
-        });
+        });*/
+        document.location = location.pathname + "?" + "convoId=" + cid
+            + "&video=1";
+
     }
+
+    function mkRandHex(len){
+        var array = new Uint32Array(len/4);
+        window.crypto.getRandomValues(array);
+        var hexCodes = [];
+        for (var i = 0; i < array.length; i ++ ){
+            // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+            var value = array[i];
+            // toString(16) will give the hex representation of the number without padding
+            var stringValue = value.toString(16)
+            // We use concatenation and slice for padding
+            var padding = '00000000'
+            var paddedValue = (padding + stringValue).slice(-padding.length)
+            hexCodes.push(paddedValue);
+        }
+        return hexCodes.join("").toLowerCase();
+    }
+
     // decide who we are initiator or recpient.
     // notice that the actual call goes in the reverse direction
     // the recipient of the invite actually creates the audiobearing peerconnection
@@ -796,32 +819,23 @@
     // change their mind, if their circumstances have changed since the invite was sent.
 
     function setRole() {
-        cid = $.getUrlVar("unruptId");
+        cid = $.getUrlVar("convoId");
+        fid = $.getUrlVar("fid");
         mid = localStorage['unruptId'];
         console.log('URL unrupt ID:', cid);
         console.log('sessionStorage unrupt ID:', mid);
         //var act = $("#action");
         if (!mid) {
-            var array = new Uint32Array(8);
-            window.crypto.getRandomValues(array);
-            var hexCodes = [];
-            for (var i = 0; i < array.length; i ++ ){
-                // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
-                var value = array[i];
-                // toString(16) will give the hex representation of the number without padding
-                var stringValue = value.toString(16)
-                // We use concatenation and slice for padding
-                var padding = '00000000'
-                var paddedValue = (padding + stringValue).slice(-padding.length)
-                hexCodes.push(paddedValue);
-            }
-            mid = hexCodes.join("").toLowerCase();
+            mid = mkRandHex(16);
             localStorage['unruptId'] = mid;
             console.log('Didnt have our own unrupt ID so generated one:', mid);
         }
         if (cid == null){
-            document.location = location.pathname + "?" + "unruptId=" + mid + "&video=1";
-            // this has the effect of getting our id into the browser bar -
+            cid = mkRandHex(16);
+            document.location = location.pathname + "?" + "convoId=" + cid
+                + "&video=1"
+                + "&fid="+mid;
+            // this has the effect of getting the convo id and our id into the browser bar -
             // making it easy to share etc.
         } else {
             var qrcode = new QRCode(document.getElementById("shareQR"), {
@@ -837,23 +851,9 @@
                 if (url) {
                     qrcode.makeCode(url);
                 }
-                if (cid.length > mid.length){
-                    // it might be an established conversation
-                    if (cid.indexOf("-") > 0){
-                        var ids = cid.split("-");
-                        if (ids.length == 2){
-                            if (ids[0] === mid){ fid = ids[1];}
-                            if (ids[1] === mid){ fid = ids[0];}
-
-                        } else {
-                            console.log("wrong number of dashes in  unruptid "+cid);
-                        }
-                    } else {
-                        console.log("wrong no dashes in unruptid "+cid);
-                    }
-                } else {
+                if (fid != null) {
                     // it's an invite
-                    initiator = (mid === cid);
+                    initiator = (mid === fid);
                     console.log(initiator ? 'We are the initiator' : 'We are not the initiator');
                     var smodal = initiator ? "#share" : "#accept";
                     $(smodal).modal('show');

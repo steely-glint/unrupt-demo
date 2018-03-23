@@ -17,8 +17,8 @@ This means that if one opens multiple tabs it becomes pot-luck which one gets me
 rendezvous server)
 
 ## Proposal
-1) unruptid becomes a conversation id.
-2) each side has a unique Id
+1) unruptid becomes a conversation id convoId
+2) each side has a unique Id 
 3) each side stores the other's Id in localStorage[conversationId]
 4) each side uses ${id}:${conversationId} to register with the rendezvous service
 5) the page comes up with the pause button in 'pause' for both sides
@@ -28,7 +28,27 @@ Or it starts itself ? (i.e. having the page open - and visible? - implies accept
 
 ### How do we bootstrap a call?
 
-initiator is the one with no unruptid on the url
-acceptor has unruptid _and_ 
-Just as now - but the QR contains ${id}:${conversationId} 
-The QR shows if localStorage[conversationId] is empty.
+* initiator is the one with no convoId on the url
+This creates a new conversationId and reloads the page.
+
+* The QR shows if localStorage[conversationId] is empty.
+* the QR contains fid=${id} & convoId=${conversationId} 
+* acceptor has unruptid _and_ fid on the url
+* initiator is sent "accept" message over ws
+* this pops the QR down
+* acceptor is sent "accepted" message over ws in reply.
+* they both set localStorage[conversationId] =fid
+* and reload page as ?convoId=${conversationId} 
+
+
+### How does an established convo start?
+* assume both are on ?convoId=${conversationId}
+* both users are 'paused'
+* first user presses 'unpause'
+* sends webrtc offer
+* second receives offer and sends answer (but does not enable mic/speaker yet)
+* when/if second unpauses audio is enabled.
+
+
+
+
