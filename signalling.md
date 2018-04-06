@@ -19,6 +19,8 @@ rendezvous server)
 ## Proposal
 1) unruptid becomes a conversation id convoId
 2) each side has a unique instanceId 
+(Initially we will generate a random number, but in future we might use an etherium id)
+So we should have 20 bytes random. 
 3) each side stores the other's instanceId in localStorage[conversationId]
 4) each side uses ${instanceId}:${conversationId} to register with the rendezvous service
 5) the page comes up with the pause button in 'pause' for both sides
