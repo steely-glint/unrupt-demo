@@ -11,7 +11,7 @@ QR codes or 'accept' buttons (which are only needed for the first call in a give
 
 For this to work we need a unique conversation ID which is usable by both sides.
 We also need to create id's for the participants that are static - but are not shared across 
-conversations. 
+conversations. - Call them InstanceId.
 (At the moment a given user/browser combo will always register with the rendezvous server with the same id
 This means that if one opens multiple tabs it becomes pot-luck which one gets messages from the 
 rendezvous server)
