@@ -18,9 +18,9 @@ rendezvous server)
 
 ## Proposal
 1) unruptid becomes a conversation id convoId
-2) each side has a unique Id 
-3) each side stores the other's Id in localStorage[conversationId]
-4) each side uses ${id}:${conversationId} to register with the rendezvous service
+2) each side has a unique instanceId 
+3) each side stores the other's instanceId in localStorage[conversationId]
+4) each side uses ${instanceId}:${conversationId} to register with the rendezvous service
 5) the page comes up with the pause button in 'pause' for both sides
 6) the initiator is the first one to un-pause
 7) the recipient also unpauses to accept a call ? 
@@ -32,12 +32,12 @@ Or it starts itself ? (i.e. having the page open - and visible? - implies accept
 This creates a new conversationId and reloads the page.
 
 * The QR shows if localStorage[conversationId] is empty.
-* the QR contains fid=${id} & convoId=${conversationId} 
+* the QR contains farInstanceId=${instanceId} & convoId=${conversationId} 
 * acceptor has unruptid _and_ fid on the url
 * initiator is sent "accept" message over ws
 * this pops the QR down
 * acceptor is sent "accepted" message over ws in reply.
-* they both set localStorage[conversationId] =fid
+* they both set localStorage[conversationId] =farInstanceId
 * and reload page as ?convoId=${conversationId} 
 
 
