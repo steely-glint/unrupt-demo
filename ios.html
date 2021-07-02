@@ -817,9 +817,13 @@
             console.log('Didnt have our own unrupt ID so generated one:', mid);
         }
         if (cid == null){
-            document.location = location.pathname + "?" + "unruptId=" + mid + "&video=1";
-            // this has the effect of getting our id into the browser bar -
-            // making it easy to share etc.
+            chooseAction.show();
+            chooseActionAudio.click( _ => {
+                document.location = location.pathname + "?" + "unruptId=" + mid;
+            });
+            chooseActionVideo.click( _ => {
+                document.location = location.pathname + "?" + "unruptId=" + mid + "&video=1";
+            });
         } else {
             var qrcode = new QRCode(document.getElementById("shareQR"), {
                 width: 280,

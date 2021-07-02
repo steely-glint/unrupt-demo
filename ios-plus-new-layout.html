@@ -8,20 +8,24 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
     <style>
         #chooseAction, #chosenAction, #audioInfo, #videoRow{
             display:none;
         }
+      
         #unrupturl{position:absolute;left:-9999px;}
 
         #in {
             transform: rotateY(180deg);
         }
+
         
         video {
             width: 100%;
         }
         .buffer-label{font-size:14px;}
+
         #otherUser, #thisUser {
             position: relative;
             width: 100%;
@@ -47,9 +51,11 @@
 <body>
 <h1 id="title" class="text-center">Unrupt Calls</h1>
 <h3 id="useragent"></h3>
+
 <div class="alert alert-info" id="message_holder">
   
 </div>
+  
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
@@ -59,11 +65,13 @@
 <div id="audioInfo" class="card">
     <div>
         <div class="card">
+
  <!--            <h4 class="card-header">Media</h4> -->
             <div class="card-body">
                 <div class="container">
                     <div class="row" id="videoRow">
                         <div class="col-4 card">
+
                             <div class="card-header">Far Camera</div>
                             <div class="card-body">
                                 <div id="otherUser">
@@ -73,8 +81,11 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-4 card"></div>
                         <div class="card">
+
+
                             <div class="card-header">This Camera</div>
                             <div class="card-body">
                                 <div id="thisUser"></div>
@@ -121,7 +132,6 @@
 
 <div class="card">
     <!-- <h4 class="card-header">Call</h4> -->
-
     <div class="card-body">
         <div id="chooseAction">
             <h5>Make Shareable Page</h5>
